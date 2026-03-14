@@ -1,0 +1,13 @@
+name = "isabel-api"
+main = "src/index.ts"
+compatibility_date = "2026-03-01"
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "isabel_db"
+database_name = "isabel-db"
+database_id = "f286cca7-4144-451f-83a2-6603067f65e9"
+
+migrations_dir = "drizzle"
