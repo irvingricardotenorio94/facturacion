@@ -1,0 +1,128 @@
+[
+  {
+    "id": "G01",
+    "descripcion": "Adquisición de mercancías",
+    "fisica": true,
+    "moral": true,
+    "regimenes": ["601", "603", "606", "612", "620", "621", "622", "625", "626"]
+  },
+  {
+    "id": "G02",
+    "descripcion": "Devoluciones, descuentos o bonificaciones",
+    "fisica": true,
+    "moral": true,
+    "regimenes": ["601", "603", "606", "612", "620", "621", "622", "625", "626"]
+  },
+  {
+    "id": "G03",
+    "descripcion": "Gastos en general",
+    "fisica": true,
+    "moral": true,
+    "regimenes": ["601", "603", "606", "612", "620", "621", "622", "625", "626"]
+  },
+  {
+    "id": "I01",
+    "descripcion": "Construcciones",
+    "fisica": true,
+    "moral": true,
+    "regimenes": ["601", "603", "606", "612", "620", "621", "622", "625", "626"]
+  },
+  {
+    "id": "I02",
+    "descripcion": "Mobiliario y equipo de oficina por inversiones",
+    "fisica": true,
+    "moral": true,
+    "regimenes": ["601", "603", "606", "612", "620", "621", "622", "625", "626"]
+  },
+  {
+    "id": "I03",
+    "descripcion": "Equipo de transporte",
+    "fisica": true,
+    "moral": true,
+    "regimenes": ["601", "603", "606", "612", "620", "621", "622", "625", "626"]
+  },
+  {
+    "id": "I04",
+    "descripcion": "Equipo de cómputo y accesorios",
+    "fisica": true,
+    "moral": true,
+    "regimenes": ["601", "603", "606", "612", "620", "621", "622", "625", "626"]
+  },
+  {
+    "id": "I05",
+    "descripcion": "Dados, troqueles, moldes, matrices y herramental",
+    "fisica": true,
+    "moral": true,
+    "regimenes": ["601", "603", "606", "612", "620", "621", "622", "625", "626"]
+  },
+  {
+    "id": "I06",
+    "descripcion": "Comunicaciones telefónicas",
+    "fisica": true,
+    "moral": true,
+    "regimenes": ["601", "603", "606", "612", "620", "621", "622", "625", "626"]
+  },
+  {
+    "id": "I07",
+    "descripcion": "Comunicaciones satelitales",
+    "fisica": true,
+    "moral": true,
+    "regimenes": ["601", "603", "606", "612", "620", "621", "622", "625", "626"]
+  },
+  {
+    "id": "I08",
+    "descripcion": "Otra maquinaria y equipo",
+    "fisica": true,
+    "moral": true,
+    "regimenes": ["601", "603", "606", "612", "620", "621", "622", "625", "626"]
+  },
+  {
+    "id": "D01",
+    "descripcion": "Honorarios médicos, dentales y gastos hospitalarios",
+    "fisica": true,
+    "moral": false,
+    "regimenes": ["605", "606", "607", "608", "611", "612", "614", "615", "616", "625"]
+  },
+  {
+    "id": "D02",
+    "descripcion": "Gastos médicos por incapacidad o discapacidad",
+    "fisica": true,
+    "moral": false,
+    "regimenes": ["605", "606", "607", "608", "611", "612", "614", "615", "616", "625"]
+  },
+  {
+    "id": "D03",
+    "descripcion": "Gastos funerales",
+    "fisica": true,
+    "moral": false,
+    "regimenes": ["605", "606", "607", "608", "611", "612", "614", "615", "616", "625"]
+  },
+  {
+    "id": "D04",
+    "descripcion": "Donativos",
+    "fisica": true,
+    "moral": false,
+    "regimenes": ["605", "606", "607", "608", "611", "612", "614", "615", "616", "625"]
+  },
+  {
+    "id": "S01",
+    "descripcion": "Sin efectos fiscales",
+    "fisica": true,
+    "moral": true,
+    "regimenes": ["601", "603", "605", "606", "607", "608", "610", "611", "612", "614", "615", "616", "620", "621", "622", "623", "624", "625", "626", "628", "629", "630"]
+  },
+  {
+    "id": "CP01",
+    "descripcion": "Pagos",
+    "fisica": true,
+    "moral": true,
+    "regimenes": ["601", "603", "605", "606", "607", "608", "610", "611", "612", "614", "615", "616", "620", "621", "622", "623", "624", "625", "626", "628", "629", "630"]
+  },
+  {
+    "id": "CN01",
+    "descripcion": "Nómina",
+    "fisica": true,
+    "moral": false,
+    "regimenes": ["605"]
+  }
+]

@@ -15,6 +15,34 @@
       "when": 1773001579104,
       "tag": "0001_colorful_black_bird",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1773524405412,
+      "tag": "0002_jazzy_tag",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1773524946982,
+      "tag": "0003_steady_sleepwalker",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1776620989878,
+      "tag": "0004_easy_vampiro",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1776623401050,
+      "tag": "0005_dizzy_cassandra_nova",
+      "breakpoints": true
     }
   ]
 }

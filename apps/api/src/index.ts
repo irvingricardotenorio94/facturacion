@@ -1,12 +1,9 @@
 import { Hono } from 'hono'
 import { jwt } from 'hono/jwt'
-import { cors } from 'hono/cors' // 1. Importamos el middleware de CORS
-import auth from './routes/auth'
-import emisores from './routes/emisores'
-import clientes from './routes/receptores'
+import { cors } from 'hono/cors'
+import { apiRoutes } from './routes'
 import type { D1Database } from '@cloudflare/workers-types'
 
-// los tipos globales para el entorno (Bindings)
 type Bindings = {
   isabel_db: D1Database
   JWT_SECRET: string
@@ -23,10 +20,8 @@ app.use('*', cors({
   credentials: true,
 }))
 
-// Rutas Públicas
-app.route('/auth', auth)
+app.route('/auth', apiRoutes.auth)
 
-// Middleware de JWT para rutas protegidas
 app.use('/api/*', async (c, next) => {
   const authMiddleware = jwt({
     secret: c.env.JWT_SECRET,
@@ -35,9 +30,10 @@ app.use('/api/*', async (c, next) => {
   return authMiddleware(c, next)
 })
 
-// Rutas Protegidas
-app.route('/api/emisores', emisores)
-app.route('/api/receptores', clientes)
+app.route('/api/emisores', apiRoutes.emisores)
+app.route('/api/receptores', apiRoutes.receptores)
+app.route('/api/admin', apiRoutes.admin)
+app.route('/api/catalogos', apiRoutes.catalogos)
 
 app.get('/', (c) => c.text('Isabel API is running!'))
 

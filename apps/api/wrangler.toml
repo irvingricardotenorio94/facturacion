@@ -11,3 +11,7 @@ database_name = "isabel-db"
 database_id = "f286cca7-4144-451f-83a2-6603067f65e9"
 
 migrations_dir = "drizzle"
+
+[[r2_buckets]]
+binding = "CSD_BUCKET"
+bucket_name = "isabel-csd"

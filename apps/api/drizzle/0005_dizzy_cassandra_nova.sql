@@ -1,0 +1,1 @@
+ALTER TABLE `cat_uso_cfdi` ADD `regimenes_permitidos` text NOT NULL;
