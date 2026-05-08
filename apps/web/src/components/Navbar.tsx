@@ -8,7 +8,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const handleLogout = () => {
-    localStorage.removeItem("isabel_token");
+    document.cookie = "auth_token=; Max-Age=0; Path=/; SameSite=Strict; Secure";
     router.push("/login");
   };
 

@@ -19,8 +19,9 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (data.token) {
-        localStorage.setItem("isabel_token", data.token); // Guardamos el token
-        router.push("/dashboard"); // Redirigimos al menú
+        const sevenDaysInSeconds = 60 * 60 * 24 * 7;
+        document.cookie = `auth_token=${encodeURIComponent(data.token)}; Max-Age=${sevenDaysInSeconds}; Path=/; SameSite=Strict; Secure`;
+        router.push("/dashboard");
       } else {
         alert("Credenciales incorrectas");
       }

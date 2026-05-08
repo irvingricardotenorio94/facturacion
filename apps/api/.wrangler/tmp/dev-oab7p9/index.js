@@ -8873,11 +8873,22 @@ var catUsoCFDI = sqliteTable("cat_uso_cfdi", {
 });
 
 // src/routes/auth.ts
+var getErrorDetails = /* @__PURE__ */ __name((error) => {
+  const message = error instanceof Error ? error.message : String(error);
+  const cause = error && typeof error === "object" && "cause" in error ? String(error.cause) : void 0;
+  return { message, cause };
+}, "getErrorDetails");
 var auth = new Hono2();
 auth.post("/register", async (c) => {
   const db = drizzle(c.env.isabel_db);
   const body = await c.req.json();
   try {
+    if (!body?.nombreCompleto || !body?.username || !body?.email || !body?.password) {
+      return c.json(
+        { success: false, error: "Faltan campos requeridos: nombreCompleto, username, email, password" },
+        400
+      );
+    }
     const msgUint8 = new TextEncoder().encode(body.password);
     const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
@@ -8890,7 +8901,9 @@ auth.post("/register", async (c) => {
     }).returning();
     return c.json({ success: true, userId: result[0].id }, 201);
   } catch (e) {
-    return c.json({ success: false, error: "Error al registrar usuario" }, 400);
+    const { message, cause } = getErrorDetails(e);
+    console.error("Auth register error:", { message, cause });
+    return c.json({ success: false, error: message, cause }, 500);
   }
 });
 auth.post("/login", async (c) => {
@@ -8898,6 +8911,9 @@ auth.post("/login", async (c) => {
   const body = await c.req.json();
   const { username, password } = body;
   try {
+    if (!username || !password) {
+      return c.json({ success: false, error: "username y password son requeridos" }, 400);
+    }
     const msgUint8 = new TextEncoder().encode(password);
     const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
@@ -8925,7 +8941,9 @@ auth.post("/login", async (c) => {
       }
     });
   } catch (e) {
-    return c.json({ success: false, error: "Error en el servidor" }, 500);
+    const { message, cause } = getErrorDetails(e);
+    console.error("Auth login error:", { message, cause });
+    return c.json({ success: false, error: message, cause }, 500);
   }
 });
 var auth_default = auth;
@@ -9260,16 +9278,27 @@ var apiRoutes = {
 
 // src/index.ts
 var app = new Hono2();
-app.use("*", cors({
-  origin: "http://localhost:3000",
-  allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowHeaders: ["Content-Type", "Authorization"],
-  exposeHeaders: ["Content-Length"],
-  maxAge: 600,
-  credentials: true
-}));
+app.use("*", async (c, next) => {
+  const rawOrigins = c.env.CORS_ORIGINS ?? "http://localhost:3000,https://facturacion-bvp.pages.dev";
+  const allowedOrigins = rawOrigins.split(",").map((origin) => origin.trim()).filter(Boolean);
+  const corsMiddleware = cors({
+    origin: /* @__PURE__ */ __name((origin) => {
+      if (!origin) return allowedOrigins[0] ?? "*";
+      return allowedOrigins.includes(origin) ? origin : allowedOrigins[0] ?? "*";
+    }, "origin"),
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    exposeHeaders: ["Content-Length"],
+    maxAge: 600,
+    credentials: true
+  });
+  return corsMiddleware(c, next);
+});
 app.route("/auth", apiRoutes.auth);
 app.use("/api/*", async (c, next) => {
+  if (c.req.method === "OPTIONS") {
+    return next();
+  }
   const authMiddleware = jwt({
     secret: c.env.JWT_SECRET,
     alg: "HS256"
@@ -9281,6 +9310,21 @@ app.route("/api/receptores", apiRoutes.receptores);
 app.route("/api/admin", apiRoutes.admin);
 app.route("/api/catalogos", apiRoutes.catalogos);
 app.get("/", (c) => c.text("Isabel API is running!"));
+app.onError((err, c) => {
+  console.error("Unhandled error:", err);
+  const isProduction = c.env.APP_ENV === "production";
+  return c.json(
+    {
+      success: false,
+      message: "Internal Server Error",
+      error: err instanceof Error ? err.message : String(err),
+      stack: isProduction ? void 0 : err instanceof Error ? err.stack : void 0,
+      path: c.req.path,
+      method: c.req.method
+    },
+    500
+  );
+});
 var src_default = app;
 
 // ../../node_modules/.pnpm/wrangler@4.69.0_@cloudflare+workers-types@4.20260301.1/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts
@@ -9324,7 +9368,7 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// .wrangler/tmp/bundle-K4PDua/middleware-insertion-facade.js
+// .wrangler/tmp/bundle-rLaxtm/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
@@ -9356,7 +9400,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// .wrangler/tmp/bundle-K4PDua/middleware-loader.entry.ts
+// .wrangler/tmp/bundle-rLaxtm/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;

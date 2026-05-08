@@ -48,7 +48,7 @@ export default function DashboardSelection() {
 
       {/* FOOTER */}
       <footer className="p-6 text-center text-slate-600 font-bold text-sm">
-        ISABEL v1.0 © 2026 - Mérida, Yucatán.
+        ISABEL v1.0 © 2026.
       </footer>
     </div>
   );

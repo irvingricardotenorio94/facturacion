@@ -86,7 +86,6 @@ export default function ConfiguracionEmisorPage() {
     <div className="w-full max-w-[95%] mx-auto animate-in fade-in duration-500 pb-10">
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
         
-        {/* ENCABEZADO ESTILO INGRESO */}
         <div className="p-8 border-b border-slate-100 bg-slate-50/50">
           <h1 className="text-2xl font-black text-slate-900 tracking-tight italic uppercase">Configuración del Emisor</h1>
           <p className="text-slate-500 font-bold text-xs uppercase tracking-widest mt-1">Identidad Fiscal y Sellos Digitales</p>
@@ -184,7 +183,6 @@ export default function ConfiguracionEmisorPage() {
 
          {/* SECCIÓN 2: CERTIFICADOS (CSD) */}
 <div className="space-y-8">
-  {/* Cambiamos a grid-cols-3 para que los 3 elementos compartan el mismo ancho */}
   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
     
     {/* 1. Certificado .cer */}
@@ -219,7 +217,7 @@ export default function ConfiguracionEmisorPage() {
       </label>
     </div>
 
-    {/* 3. Contraseña CSD (Ahora mide lo mismo que los anteriores) */}
+    {/* 3. Contraseña CSD  */}
     <div>
       <label className="block text-slate-500 font-bold text-[10px] uppercase mb-3 tracking-widest">
         Contraseña CSD

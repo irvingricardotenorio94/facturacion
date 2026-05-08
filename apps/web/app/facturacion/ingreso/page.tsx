@@ -9,6 +9,13 @@ interface UsoCFDI {
   descripcion: string;
 }
 
+function getCookie(name: string): string | null {
+  const cookies = document.cookie.split("; ");
+  const target = cookies.find((cookie) => cookie.startsWith(`${name}=`));
+  if (!target) return null;
+  return decodeURIComponent(target.split("=")[1] ?? "");
+}
+
 export default function IngresoPage() {
   const router = useRouter();
   const hasFetchedUsosRef = useRef(false);
@@ -30,7 +37,7 @@ export default function IngresoPage() {
     folio: ""
   });
 
-  // 2. Cargar catálogo desde tu API
+  // 2. Cargar catálogo
   useEffect(() => {
     if (hasFetchedUsosRef.current) return;
     hasFetchedUsosRef.current = true;
@@ -38,7 +45,7 @@ export default function IngresoPage() {
     async function fetchUsos() {
       try {
         setErrorUsos(null);
-        const token = localStorage.getItem("isabel_token");
+        const token = getCookie("auth_token");
         console.log("[IngresoPage] Token para uso-cfdi:", token);
 
         if (!token) {
@@ -55,7 +62,7 @@ export default function IngresoPage() {
         });
 
         if (response.status === 401) {
-          localStorage.clear();
+          document.cookie = "auth_token=; Max-Age=0; Path=/; SameSite=Strict; Secure";
           setErrorUsos("Tu sesión expiró. Inicia sesión nuevamente.");
           router.push("/login");
           return;

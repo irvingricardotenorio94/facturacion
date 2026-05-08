@@ -5,6 +5,16 @@ import { eq } from 'drizzle-orm'
 import { sign } from 'hono/jwt' 
 import type { D1Database } from '@cloudflare/workers-types'
 
+const getErrorDetails = (error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error)
+  const cause =
+    error && typeof error === 'object' && 'cause' in error
+      ? String((error as { cause?: unknown }).cause)
+      : undefined
+
+  return { message, cause }
+}
+
 // Agregamos JWT_SECRET a los Bindings
 const auth = new Hono<{ 
   Bindings: { 
@@ -19,6 +29,13 @@ auth.post('/register', async (c) => {
   const body = await c.req.json()
 
   try {
+    if (!body?.nombreCompleto || !body?.username || !body?.email || !body?.password) {
+      return c.json(
+        { success: false, error: 'Faltan campos requeridos: nombreCompleto, username, email, password' },
+        400
+      )
+    }
+
     const msgUint8 = new TextEncoder().encode(body.password)
     const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8)
     const hashArray = Array.from(new Uint8Array(hashBuffer))
@@ -33,7 +50,9 @@ auth.post('/register', async (c) => {
 
     return c.json({ success: true, userId: result[0].id }, 201)
   } catch (e) {
-    return c.json({ success: false, error: 'Error al registrar usuario' }, 400)
+    const { message, cause } = getErrorDetails(e)
+    console.error('Auth register error:', { message, cause })
+    return c.json({ success: false, error: message, cause }, 500)
   }
 })
 
@@ -46,6 +65,10 @@ auth.post('/login', async (c) => {
   const { username, password } = body
 
   try {
+    if (!username || !password) {
+      return c.json({ success: false, error: 'username y password son requeridos' }, 400)
+    }
+
     // 1. Hashear la contraseña recibida para comparar
     const msgUint8 = new TextEncoder().encode(password)
     const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8)
@@ -83,7 +106,9 @@ auth.post('/login', async (c) => {
     })
 
   } catch (e) {
-    return c.json({ success: false, error: 'Error en el servidor' }, 500)
+    const { message, cause } = getErrorDetails(e)
+    console.error('Auth login error:', { message, cause })
+    return c.json({ success: false, error: message, cause }, 500)
   }
 })
 
